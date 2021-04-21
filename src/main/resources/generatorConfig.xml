@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+    <properties resource="db.properties"/>
+
+    <context id="DMySQLTables" targetRuntime="MyBatis3">
+        <plugin type="org.mybatis.generator.plugins.SerializablePlugin">
+            <property name="suppressJavaInterface" value="false"/>
+        </plugin>
+        <plugin type="com.github.oceanc.mybatis3.generator.plugin.LombokAnnotationPlugin"/>
+        <plugin type="com.utils.MySQLLimitPlugin"/>
+
+        <commentGenerator>
+            <property name="suppressAllComments" value="true"/>
+        </commentGenerator>
+
+        <jdbcConnection driverClass="${jdbc.driverClass}" connectionURL="${jdbc.jdbcUrl}" userId="${jdbc.user}" password="${jdbc.password}"/>
+
+        <!--targetPackage：生成的类将被放置的包，真实的包受 enableSubPackages 属性控制
+            targetProject：目标项目，指定一个存在的本地文件系统目录，生成的内容会放到指定目录中，如果目录不存在，MBG 不会自动建目录 -->
+        <javaModelGenerator targetPackage="generator.entity" targetProject="src/main/java">
+            <!--enableSubPackages：是否在 targetPackage 的基础上，根据数据库的 schema 再生成一层 package，默认为 false
+                假设 MYSCHMA 中的表为 MYTABLE，targetPackage 属性为 “com.mycompany”。
+                为 true，则类放在 “com.mycompany.myschema” 中。
+                为 false，则类放在 “com.mycompany” 中。-->
+            <property name="enableSubPackages" value="false"/>
+            <!--trimStrings：设置是否在getter方法中，对String类型字段调用trim()方法，默认false。
+                可以使用<table>或<columnOverride>元素中的trimStrings属性覆盖。-->
+            <property name="trimStrings" value="true"/>
+        </javaModelGenerator>
+
+
+        <!--生成 SQL 映射 XML 文件。如果没有配置该元素，则不生成 XML 文件-->
+        <sqlMapGenerator targetPackage="generator.mapper" targetProject="src/main/resources">
+            <property name="enableSubPackages" value="false"/>
+        </sqlMapGenerator>
+
+
+        <!--生成 Mapper 接口。如果没有配置该元素，则不生成 Mapper 接口
+            type：用户提供的 DAO 生成器必须扩展 org.mybatis.generator.codegen.AbstractJavaClientGenerator 类，并且必须具有公共默认构造函数。
+                如果 <context> targetRuntime 是 MyBatis3
+                    1，ANNOTATEDMAPPER：会生成使用 Mapper 接口 + Annotation 的方式创建（SQL生成在annotation中），不会生成对应的 XML
+                    2，MIXEDMAPPER：使用混合配置，会生成 Mapper 接口，并适当添加合适的 Annotation，但是 XML 会生成在 XML 中
+                    3，XMLMAPPER：会生成 Mapper 接口，接口完全依赖 XML-->
+        <javaClientGenerator type="XMLMAPPER" targetPackage="generator.mapper" targetProject="src/main/java">
+            <property name="enableSubPackages" value="false"/>
+        </javaClientGenerator>
+
+        <!-- 指定要逆向分析哪些表，根据表创建 javaBean, 可用 % 匹配所有表 -->
+        <!--<table tableName="%"/>-->
+<!--        <table tableName="%" domainObjectName="Message">-->
+<!--            <generatedKey column="id" sqlStatement="JDBC" identity="true"/>-->
+<!--        </table>-->
+        <table tableName="category" domainObjectName="Category">
+            <generatedKey column="id" sqlStatement="JDBC" identity="true"/>
+        </table>
+    </context>
+</generatorConfiguration>
