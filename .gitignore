@@ -1,11 +1,7 @@
-# Build and Release Folders
-bin-debug/
-bin-release/
-[Oo]bj/
-[Bb]in/
-
-# Other files and folders
-.settings/
+.idea/
+target/
+src/main/java/generator
+src/main/resources/generator
 
 # Executables
 *.swf
